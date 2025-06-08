@@ -1,4 +1,4 @@
 {
   "server_fqdn": "nodeprobe-1",
-  "server_ip": "172.20.0.10"
-} 
+  "server_ip": "192.168.65.10"
+}

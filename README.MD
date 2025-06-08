@@ -29,7 +29,7 @@ NodeProbe is a distributed peer-to-peer system designed for network monitoring a
 1. **Clone and build the system:**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/seahow-uk/nodeprobe.git
    cd nodeprobe
    docker-compose up --build
    ```
@@ -185,7 +185,7 @@ Response:
   "timestamp": "2024-01-15T10:30:00Z",
   "node_id": "uuid-here",
   "node_fqdn": "nodeprobe-1",
-  "node_ip": "172.20.0.10",
+  "node_ip": "192.168.65.10",
   "known_nodes": 3
 }
 ```
