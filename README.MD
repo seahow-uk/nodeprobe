@@ -325,18 +325,6 @@ sqlite3 /app/data/nodeprobe.db ".tables"
 - **Database Cleanup**: Configure retention based on storage constraints
 - **Network Timeouts**: Tune for network latency characteristics
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes following Go best practices
-4. Add comprehensive tests
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🙏 Acknowledgments
 
 - Built with Go following clean architecture principles
