@@ -290,27 +290,25 @@ The project follows Clean Architecture principles:
 
 ### Debugging
 
-**View logs:**
+### _View logs_
 
 ```bash
 docker-compose logs -f nodeprobe-1
 ```
 
-**Access container:**
+### _Access container_
 
 ```bash
 docker exec -it nodeprobe-1 sh
 ```
 
-**Check database:**
+### _Check database_
 
 ```bash
 sqlite3 /app/data/nodeprobe.db ".tables"
 ```
 
-Here's how you can test the deployed system:
-
-## Testing Health Checks
+### _Testing Health Checks_
 
 Each node exposes a health endpoint at https://`node-fqdn`:`port`/health
 
@@ -318,60 +316,39 @@ Test using: curl -k <https://localhost:8443/health> (for node 1)
 
 The Docker Compose file already includes health checks that run every 30 seconds
 
-## Testing Node Information
+### _Testing Node Information_
 
 Check node details at https://`node-fqdn`:`port`/nodeinfo
 
 Example: curl -k <https://localhost:8443/nodeinfo>
 
-## Testing Dashboard Access
+### _Testing Dashboard Access_
 
 Access the web dashboard at https://`node-fqdn`:`port`/dashboard
 
 Example: <https://localhost:8443/dashboard>
 
-## Testing Multi-Node Communication
+### _Testing Monitoring Points_
 
-The system is set up with 4 nodes (ports 8443-8446)
+Watch the logs:
 
-Test inter-node communication by:
-
-Checking if nodes can report to each other
-
-Verifying data synchronization between nodes
-
-Testing failover scenarios
-
-## Testing Monitoring Points
-
-Watch the logs: docker logs nodeprobe-1 (and other nodes)
+`docker logs nodeprobe-1 (and other nodes)`
 
 Check data persistence in the mounted volumes
 
-Monitor the SQLite database in /app/data/nodeprobe.db
+Monitor the SQLite database in
 
-## Testing System Load
+`/app/data/nodeprobe.db`
+
+### _Testing System Load_
 
 Test the system under load using tools like Apache Bench or JMeter
-Focus on the main endpoints: /health, /nodeinfo, /dashboard
 
-## Testing Security Features
+Focus on the main endpoints: `/health`, `/nodeinfo`, `/dashboard`
 
-Verify TLS certificates in /app/certs
+### _Testing Security Features_
 
-Test HTTPS connections
-
-Check authentication mechanisms
-
-## Testing System Recovery
-
-Test system recovery by:
-
-Stopping and restarting nodes
-
-Simulating network partitions
-
-Testing the restart: unless-stopped policy
+Verify TLS certificates in `/app/certs`
 
 ## 📈 Performance Considerations
 
