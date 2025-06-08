@@ -1,0 +1,129 @@
+version: "3.8"
+
+services:
+  # First node (reporting server)
+  nodeprobe-1:
+    build: .
+    container_name: nodeprobe-1
+    hostname: nodeprobe-1
+    networks:
+      nodeprobe_network:
+        ipv4_address: 172.20.0.10
+    ports:
+      - "8443:443"
+    volumes:
+      - node1_data:/app/data
+      - node1_certs:/app/certs
+      - ./configs/node1:/app/configs:ro
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost:443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Second node
+  nodeprobe-2:
+    build: .
+    container_name: nodeprobe-2
+    hostname: nodeprobe-2
+    networks:
+      nodeprobe_network:
+        ipv4_address: 172.20.0.11
+    ports:
+      - "8444:443"
+    volumes:
+      - node2_data:/app/data
+      - node2_certs:/app/certs
+      - ./configs/node2:/app/configs:ro
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost:443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      - nodeprobe-1
+
+  # Third node
+  nodeprobe-3:
+    build: .
+    container_name: nodeprobe-3
+    hostname: nodeprobe-3
+    networks:
+      nodeprobe_network:
+        ipv4_address: 172.20.0.12
+    ports:
+      - "8445:443"
+    volumes:
+      - node3_data:/app/data
+      - node3_certs:/app/certs
+      - ./configs/node3:/app/configs:ro
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost:443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      - nodeprobe-1
+
+  # Fourth node
+  nodeprobe-4:
+    build: .
+    container_name: nodeprobe-4
+    hostname: nodeprobe-4
+    networks:
+      nodeprobe_network:
+        ipv4_address: 172.20.0.13
+    ports:
+      - "8446:443"
+    volumes:
+      - node4_data:/app/data
+      - node4_certs:/app/certs
+      - ./configs/node4:/app/configs:ro
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost:443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      - nodeprobe-2
+
+networks:
+  nodeprobe_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  node1_data:
+    driver: local
+  node1_certs:
+    driver: local
+  node2_data:
+    driver: local
+  node2_certs:
+    driver: local
+  node3_data:
+    driver: local
+  node3_certs:
+    driver: local
+  node4_data:
+    driver: local
+  node4_certs:
+    driver: local
