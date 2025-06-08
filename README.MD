@@ -111,8 +111,6 @@ nodeprobe/
 
 ### Seed Configuration (`seed.json`)
 
-Defines initial nodes for network discovery:
-
 ```json
 {
   "nodes": [
@@ -130,8 +128,6 @@ Defines initial nodes for network discovery:
 
 ### Reporting Server Configuration (`reportingserver.json`)
 
-Specifies where to send network snapshots:
-
 ```json
 {
   "server_fqdn": "reporting.example.com",
@@ -141,9 +137,11 @@ Specifies where to send network snapshots:
 
 ### Environment Variables
 
-- `NODE_ENV`: Environment (production/development)
-- `DATA_DIR`: Data directory path (default: `/app/data`)
-- `CERT_DIR`: Certificate directory path (default: `/app/certs`)
+```bash
+NODE_ENV=production
+DATA_DIR=/app/data
+CERT_DIR=/app/certs
+```
 
 ## 🌐 API Endpoints
 
@@ -310,6 +308,71 @@ docker exec -it nodeprobe-1 sh
 sqlite3 /app/data/nodeprobe.db ".tables"
 ```
 
+Here's how you can test the deployed system:
+
+## Testing Health Checks
+
+Each node exposes a health endpoint at https://`node-fqdn`:`port`/health
+
+Test using: curl -k <https://localhost:8443/health> (for node 1)
+
+The Docker Compose file already includes health checks that run every 30 seconds
+
+## Testing Node Information
+
+Check node details at https://`node-fqdn`:`port`/nodeinfo
+
+Example: curl -k <https://localhost:8443/nodeinfo>
+
+## Testing Dashboard Access
+
+Access the web dashboard at https://`node-fqdn`:`port`/dashboard
+
+Example: <https://localhost:8443/dashboard>
+
+## Testing Multi-Node Communication
+
+The system is set up with 4 nodes (ports 8443-8446)
+
+Test inter-node communication by:
+
+Checking if nodes can report to each other
+
+Verifying data synchronization between nodes
+
+Testing failover scenarios
+
+## Testing Monitoring Points
+
+Watch the logs: docker logs nodeprobe-1 (and other nodes)
+
+Check data persistence in the mounted volumes
+
+Monitor the SQLite database in /app/data/nodeprobe.db
+
+## Testing System Load
+
+Test the system under load using tools like Apache Bench or JMeter
+Focus on the main endpoints: /health, /nodeinfo, /dashboard
+
+## Testing Security Features
+
+Verify TLS certificates in /app/certs
+
+Test HTTPS connections
+
+Check authentication mechanisms
+
+## Testing System Recovery
+
+Test system recovery by:
+
+Stopping and restarting nodes
+
+Simulating network partitions
+
+Testing the restart: unless-stopped policy
+
 ## 📈 Performance Considerations
 
 ### Scalability
@@ -324,10 +387,3 @@ sqlite3 /app/data/nodeprobe.db ".tables"
 - **Polling Interval**: Adjust based on network size and requirements
 - **Database Cleanup**: Configure retention based on storage constraints
 - **Network Timeouts**: Tune for network latency characteristics
-
-## 🙏 Acknowledgments
-
-- Built with Go following clean architecture principles
-- Uses SQLite for local data persistence
-- Containerized with Docker for easy deployment
-- Inspired by distributed systems and peer-to-peer networking concepts
